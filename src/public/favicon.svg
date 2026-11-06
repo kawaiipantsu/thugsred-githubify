@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- THUGSred query toolkit mark: nerd glasses whose right lens is a magnifier (red handle = THUGSred) -->
+  <rect width="64" height="64" rx="14" fill="#080f17"/>
+  <circle cx="20" cy="29" r="11" fill="#7de0ca" fill-opacity=".14" stroke="#7de0ca" stroke-width="4"/>
+  <circle cx="42" cy="29" r="11" fill="#7de0ca" fill-opacity=".14" stroke="#7de0ca" stroke-width="4"/>
+  <path d="M28 26q3-3 6 0" fill="none" stroke="#7de0ca" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M50 37l8 9" stroke="#e25d6e" stroke-width="6" stroke-linecap="round"/>
+  <path d="M15 24l4-3" stroke="#ffffff" stroke-opacity=".7" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

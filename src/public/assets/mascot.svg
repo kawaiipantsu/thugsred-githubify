@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 240" width="260" height="240" role="img" aria-labelledby="t">
+  <title id="t">Githubify mascot: a nerd in a hoodie and glasses, typing dorks on a laptop</title>
+  <style>
+    .hand-l { animation: tap .3s ease-in-out infinite alternate; }
+    .hand-r { animation: tap .3s ease-in-out .15s infinite alternate; }
+    @keyframes tap { to { transform: translateY(-3px); } }
+    .eyes { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; }
+    @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+    .glow { animation: flicker 2.6s ease-in-out infinite; }
+    @keyframes flicker { 50% { opacity: .55; } }
+    .op { font: 700 11px ui-monospace, Menlo, Consolas, monospace; fill: #7de0ca; opacity: 0; animation: rise 4.8s linear infinite; }
+    .op.r { fill: #ff9b9b; }
+    .op.g { fill: #ffd34d; }
+    .o2 { animation-delay: 1.2s; } .o3 { animation-delay: 2.4s; } .o4 { animation-delay: 3.6s; }
+    @keyframes rise { 0% { opacity: 0; transform: translateY(0); } 12% { opacity: 1; } 70% { opacity: .8; } 100% { opacity: 0; transform: translateY(-46px); } }
+    .drop { animation: sweat 4.5s ease-in infinite; }
+    @keyframes sweat { 0%, 55% { opacity: 0; transform: translateY(0); } 65% { opacity: 1; } 100% { opacity: 0; transform: translateY(10px); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .op { opacity: .85; } }
+  </style>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="60%" r="55%">
+      <stop offset="0" stop-color="#7de0ca" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#7de0ca" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="screenlight" cx="50%" cy="100%" r="80%">
+      <stop offset="0" stop-color="#7de0ca" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#7de0ca" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hoodie" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34495a"/>
+      <stop offset="1" stop-color="#22313d"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="130" cy="140" rx="128" ry="100" fill="url(#bg)"/>
+
+
+  <!-- hood (back) + body -->
+  <ellipse cx="130" cy="90" rx="52" ry="56" fill="url(#hoodie)"/>
+  <path d="M38 205 C38 160 72 136 130 136 C188 136 222 160 222 205 Z" fill="url(#hoodie)"/>
+  <ellipse cx="130" cy="95" rx="40" ry="44" fill="#16212b"/>
+
+  <!-- head -->
+  <circle cx="130" cy="98" r="31" fill="#f1c7a1"/>
+  <path d="M100 86 Q106 60 130 63 Q154 60 161 86 Q151 74 142 79 Q135 66 126 78 Q115 69 100 86 Z" fill="#3b2a20"/>
+  <ellipse cx="111" cy="110" rx="5" ry="3" fill="#ff9b9b" opacity=".35"/>
+  <ellipse cx="149" cy="110" rx="5" ry="3" fill="#ff9b9b" opacity=".35"/>
+  <path class="drop" d="M161 80 q3 5 0 7 q-3 -2 0 -7z" fill="#9cc8f2"/>
+
+  <!-- eyes + glasses (lenses lit by the screen) -->
+  <g class="eyes">
+    <circle cx="117" cy="99" r="2.6" fill="#1a1a1a"/>
+    <circle cx="143" cy="99" r="2.6" fill="#1a1a1a"/>
+  </g>
+  <g fill="#7de0ca" fill-opacity=".22" stroke="#7de0ca" stroke-width="3">
+    <circle cx="117" cy="99" r="11.5"/>
+    <circle cx="143" cy="99" r="11.5"/>
+  </g>
+  <path d="M128.5 97 q1.5 -2.5 3 0" fill="none" stroke="#7de0ca" stroke-width="3" stroke-linecap="round"/>
+  <path d="M111 93 l4 -3 M137 93 l4 -3" stroke="#fff" stroke-opacity=".75" stroke-width="2" stroke-linecap="round"/>
+  <path d="M123 117 Q131 123 139 115" fill="none" stroke="#7a3f2c" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse class="glow" cx="130" cy="112" rx="30" ry="18" fill="url(#screenlight)"/>
+
+  <!-- drawstrings -->
+  <path d="M118 133 L116 156 M142 133 L144 156" stroke="#c3d0d6" stroke-width="2.2" stroke-linecap="round"/>
+  <rect x="114" y="155" width="4" height="7" rx="1.5" fill="#99a9b5"/>
+  <rect x="142" y="155" width="4" height="7" rx="1.5" fill="#99a9b5"/>
+
+  <!-- arms + typing hands -->
+  <!-- laptop (lid facing us) -->
+  <rect x="82" y="122" width="96" height="72" rx="7" fill="#14212c" stroke="#263540" stroke-width="2"/>
+  <g transform="translate(130 156)">
+    <circle cx="-8" cy="-2" r="7" fill="none" stroke="#7de0ca" stroke-width="2.5"/>
+    <circle cx="8" cy="-2" r="7" fill="none" stroke="#7de0ca" stroke-width="2.5"/>
+    <path d="M-2 -3 q2 -2 4 0" fill="none" stroke="#7de0ca" stroke-width="2"/>
+    <path d="M13 3 l5 6" stroke="#e25d6e" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <g transform="rotate(-8 92 140)">
+    <rect x="88" y="130" width="22" height="20" rx="2" fill="#ffd34d"/>
+    <path d="M92 136 h14 M92 141 h10 M92 146 h12" stroke="#8a6a1f" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+  <rect x="150" y="176" width="20" height="8" rx="4" fill="#b83c4b" transform="rotate(10 160 180)"/>
+  <!-- arms + typing hands, at the sides of the lid -->
+  <path d="M50 168 Q56 188 72 190" fill="none" stroke="#2c3e4c" stroke-width="17" stroke-linecap="round"/>
+  <path d="M210 168 Q204 188 188 190" fill="none" stroke="#2c3e4c" stroke-width="17" stroke-linecap="round"/>
+  <ellipse class="hand-l" cx="76" cy="190" rx="10" ry="6.5" fill="#f1c7a1"/>
+  <ellipse class="hand-r" cx="184" cy="190" rx="10" ry="6.5" fill="#f1c7a1"/>
+  <rect x="56" y="194" width="148" height="9" rx="3.5" fill="#1c2b37" stroke="#263540" stroke-width="1.5"/>
+
+  <!-- energy drink -->
+  <rect x="222" y="166" width="19" height="37" rx="4" fill="#b83c4b"/>
+  <ellipse cx="231.5" cy="167" rx="9.5" ry="2.6" fill="#d9dfe3"/>
+  <path d="M234 175 l-6 11 h5 l-3 10 l8 -13 h-5 l3 -8z" fill="#ffd34d"/>
+
+  <!-- desk -->
+  <rect x="10" y="203" width="240" height="6" rx="3" fill="#263540"/>
+  <!-- floating dork operators (drawn last, so they float in front) -->
+  <text class="op o1" x="30" y="92">repo:</text>
+  <text class="op r o2" x="190" y="80">path:</text>
+  <text class="op g o3" x="4" y="130">content:</text>
+  <text class="op o4" x="198" y="124">org:</text>
+</svg>

@@ -1,0 +1,595 @@
+{
+  "categories": [
+    {
+      "id": "domain-footprint",
+      "title": "Domain & service footprint",
+      "lead": "Follow domain references through code and configuration. A mention is a lead, not proof of ownership.",
+      "icon": 61612,
+      "templates": [
+        {
+          "title": "Domain mentions in an organisation",
+          "query": "org:{org} content:\"{domain}\"",
+          "note": "Find the scoped domain inside file contents.",
+          "tip": "Read surrounding lines before deciding what a reference means.",
+          "mode": "code"
+        },
+        {
+          "title": "Domain mentions in one repository",
+          "query": "repo:{repo} content:\"{domain}\"",
+          "note": "Keep the investigation within one named project.",
+          "tip": "Use the complete owner/repository name.",
+          "mode": "code"
+        },
+        {
+          "title": "HTTPS endpoint references",
+          "query": "org:{org} content:\"https://{domain}\"",
+          "note": "Look for URLs beginning with the scoped HTTPS host.",
+          "tip": "Repeat with a specific subdomain when the domain has several services.",
+          "mode": "code"
+        },
+        {
+          "title": "Domain in YAML configuration",
+          "query": "repo:{repo} content:\"{domain}\" (path:*.yml OR path:*.yaml)",
+          "note": "Review deployment and application configuration referencing the domain.",
+          "tip": "Example configuration can intentionally contain fictional infrastructure.",
+          "mode": "code",
+          "global_query": "(path:*.yml OR path:*.yaml)"
+        },
+        {
+          "title": "Domain outside documentation paths",
+          "query": "org:{org} content:\"{domain}\" NOT path:docs",
+          "note": "Reduce matches whose path contains docs.",
+          "tip": "This is a path substring exclusion, not a guarantee that every result is application code.",
+          "mode": "code"
+        },
+        {
+          "title": "Domain without forked repositories",
+          "query": "org:{org} content:\"{domain}\" NOT is:fork",
+          "note": "Focus on repositories not marked as forks.",
+          "tip": "Compare with forks separately when tracking inherited configuration.",
+          "mode": "code"
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "title": "Build & deployment",
+      "lead": "Map how a project is packaged and deployed by reviewing its published configuration.",
+      "icon": 61874,
+      "templates": [
+        {
+          "title": "GitHub Actions workflows",
+          "query": "repo:{repo} path:/.github/workflows/**",
+          "note": "Review workflow definitions and deployment references.",
+          "tip": "Workflow names and environment labels help establish project context.",
+          "mode": "code",
+          "global_query": "path:/.github/workflows/**"
+        },
+        {
+          "title": "Docker build files",
+          "query": "repo:{repo} path:Dockerfile",
+          "note": "Locate files whose path includes Dockerfile.",
+          "tip": "Review base images, exposed ports and copied paths.",
+          "mode": "code",
+          "global_query": "path:Dockerfile"
+        },
+        {
+          "title": "Compose definitions",
+          "query": "repo:{repo} (path:compose.yml OR path:compose.yaml OR path:docker-compose.yml OR path:docker-compose.yaml)",
+          "note": "Find common Compose filenames.",
+          "tip": "Trace service names and bind mounts without assuming the examples are live deployments.",
+          "mode": "code",
+          "global_query": "(path:compose.yml OR path:compose.yaml OR path:docker-compose.yml OR path:docker-compose.yaml)"
+        },
+        {
+          "title": "Terraform configuration",
+          "query": "org:{org} (path:*.tf OR path:*.tfvars)",
+          "note": "Discover infrastructure-as-code definitions.",
+          "tip": "Resource names describe intent; confirm the actual asset inventory separately.",
+          "mode": "code",
+          "global_query": "(path:*.tf OR path:*.tfvars)"
+        },
+        {
+          "title": "Deployment directory",
+          "query": "repo:{repo} path:/deploy/**",
+          "note": "Inspect the deploy directory at the repository root.",
+          "tip": "Adapt the directory to the project layout.",
+          "mode": "code",
+          "global_query": "path:/deploy/**"
+        },
+        {
+          "title": "Domain in web-server configuration",
+          "query": "org:{org} content:\"{domain}\" (path:nginx OR path:apache)",
+          "note": "Find routing-related files mentioning the scoped domain.",
+          "tip": "Configuration may describe a development environment or an inactive service.",
+          "mode": "code",
+          "global_query": "(path:nginx OR path:apache)"
+        }
+      ]
+    },
+    {
+      "id": "dependencies",
+      "title": "Dependencies & implementation",
+      "lead": "Identify a project’s languages, packages and integration points.",
+      "icon": 61875,
+      "templates": [
+        {
+          "title": "JavaScript package manifest",
+          "query": "repo:{repo} path:/package.json",
+          "note": "Find the root JavaScript package manifest.",
+          "tip": "For a monorepo, remove the leading slash to include nested manifests.",
+          "mode": "code",
+          "global_query": "path:/package.json"
+        },
+        {
+          "title": "PHP package manifest",
+          "query": "repo:{repo} path:/composer.json",
+          "note": "Review the root Composer manifest.",
+          "tip": "Compare declared packages with the project documentation.",
+          "mode": "code",
+          "global_query": "path:/composer.json"
+        },
+        {
+          "title": "Python project metadata",
+          "query": "repo:{repo} path:/pyproject.toml",
+          "note": "Locate Python build and dependency metadata.",
+          "tip": "Some projects keep requirements in separate files instead.",
+          "mode": "code",
+          "global_query": "path:/pyproject.toml"
+        },
+        {
+          "title": "Go and Rust manifests",
+          "query": "repo:{repo} (path:go.mod OR path:Cargo.toml)",
+          "note": "Find module and crate manifests.",
+          "tip": "Nested manifests can reveal separate components.",
+          "mode": "code",
+          "global_query": "(path:go.mod OR path:Cargo.toml)"
+        },
+        {
+          "title": "Package references in a lockfile",
+          "query": "repo:{repo} content:\"{term}\" path:package-lock.json",
+          "note": "Look for a chosen package or integration string.",
+          "tip": "Search absence is inconclusive: large or generated files may not be indexed.",
+          "mode": "code",
+          "global_query": "content:\"{term}\" path:package-lock.json"
+        },
+        {
+          "title": "Term in a selected language",
+          "query": "repo:{repo} language:\"{language}\" content:\"{term}\"",
+          "note": "Focus a content search on one language.",
+          "tip": "Use GitHub’s recognised language name.",
+          "mode": "code",
+          "global_query": "language:\"{language}\" content:\"{term}\""
+        }
+      ]
+    },
+    {
+      "id": "project-context",
+      "title": "Documentation & project context",
+      "lead": "Use public project material to interpret technical findings and distinguish examples from deployed systems.",
+      "icon": 61485,
+      "templates": [
+        {
+          "title": "Domain in README files",
+          "query": "org:{org} path:README content:\"{domain}\"",
+          "note": "Find README paths mentioning the scoped domain.",
+          "tip": "A link may be a citation or dependency rather than an owned endpoint.",
+          "mode": "code",
+          "global_query": "path:README"
+        },
+        {
+          "title": "Term in project documentation",
+          "query": "repo:{repo} path:/docs/** content:\"{term}\"",
+          "note": "Search a project’s root docs directory.",
+          "tip": "Try a broader path if documentation lives elsewhere.",
+          "mode": "code",
+          "global_query": "path:/docs/** content:\"{term}\""
+        },
+        {
+          "title": "Published security guidance",
+          "query": "repo:{repo} (path:SECURITY.md OR path:security.txt)",
+          "note": "Locate public security-policy files.",
+          "tip": "Read the project’s current reporting instructions before contacting maintainers.",
+          "mode": "code",
+          "global_query": "(path:SECURITY.md OR path:security.txt)"
+        },
+        {
+          "title": "Ownership and contribution guidance",
+          "query": "repo:{repo} (path:CODEOWNERS OR path:CONTRIBUTING.md)",
+          "note": "Locate files describing review responsibilities and contribution rules.",
+          "tip": "These are project-maintenance documents, not a complete organisation chart.",
+          "mode": "code",
+          "global_query": "(path:CODEOWNERS OR path:CONTRIBUTING.md)"
+        },
+        {
+          "title": "Term in changelog files",
+          "query": "repo:{repo} path:CHANGELOG content:\"{term}\"",
+          "note": "Find a named component or behaviour in published release notes.",
+          "tip": "A changelog entry can help identify the relevant release or migration.",
+          "mode": "code",
+          "global_query": "path:CHANGELOG content:\"{term}\""
+        },
+        {
+          "title": "Domain in examples",
+          "query": "repo:{repo} path:/examples/** content:\"{domain}\"",
+          "note": "Separate demonstration references from production configuration.",
+          "tip": "Example values are not evidence of a live service.",
+          "mode": "code",
+          "global_query": "path:/examples/**"
+        }
+      ]
+    },
+    {
+      "id": "repositories",
+      "title": "Repository discovery",
+      "lead": "Search project metadata and README text. These searches return repositories, not individual code matches.",
+      "icon": 61595,
+      "templates": [
+        {
+          "title": "Public, non-archived projects",
+          "query": "org:{org} is:public archived:false",
+          "note": "List public repositories in the selected organisation that are not archived.",
+          "tip": "This does not imply active maintenance.",
+          "mode": "repositories",
+          "global_query": "is:public archived:false"
+        },
+        {
+          "title": "Archived projects",
+          "query": "org:{org} archived:true",
+          "note": "Review retired or preserved projects.",
+          "tip": "Historical configuration may no longer describe current infrastructure.",
+          "mode": "repositories",
+          "global_query": "archived:true"
+        },
+        {
+          "title": "Forked projects",
+          "query": "org:{org} fork:only",
+          "note": "List repositories marked as forks.",
+          "tip": "Check the upstream project before attributing implementation choices.",
+          "mode": "repositories",
+          "global_query": "fork:only"
+        },
+        {
+          "title": "Term in project descriptions and READMEs",
+          "query": "org:{org} \"{term}\" in:name,description,readme",
+          "note": "Find a project by its name, description or README text.",
+          "tip": "Use code mode for arbitrary file content.",
+          "mode": "repositories",
+          "global_query": "\"{term}\" in:name,description,readme"
+        },
+        {
+          "title": "Projects in a selected language",
+          "query": "org:{org} language:\"{language}\" stars:>=10",
+          "note": "Find projects by language with a modest popularity filter.",
+          "tip": "Stars help prioritise reading; they are not a quality or security score.",
+          "mode": "repositories",
+          "global_query": "language:\"{language}\" stars:>=10"
+        },
+        {
+          "title": "Domain references in READMEs",
+          "query": "org:{org} \"{domain}\" in:readme",
+          "note": "Find repositories whose README mentions the domain.",
+          "tip": "Search project code next to understand the relationship.",
+          "mode": "repositories",
+          "global_query": "in:readme"
+        }
+      ]
+    },
+    {
+      "id": "conversations",
+      "title": "Issues & pull requests",
+      "lead": "Follow public project discussions and changes with the separate issue-search syntax.",
+      "icon": 61670,
+      "templates": [
+        {
+          "title": "Open issues about a term",
+          "query": "repo:{repo} is:issue is:open \"{term}\" in:title,body",
+          "note": "Find open discussions about a feature or component.",
+          "tip": "Read the full discussion to distinguish reports from confirmed behaviour.",
+          "mode": "issues",
+          "global_query": "is:issue is:open \"{term}\" in:title,body"
+        },
+        {
+          "title": "Domain in issue discussions",
+          "query": "repo:{repo} is:issue \"{domain}\" in:body,comments",
+          "note": "Find a domain in issue bodies or comments.",
+          "tip": "A reported URL can belong to a test fixture or a third party.",
+          "mode": "issues",
+          "global_query": "is:issue in:body,comments"
+        },
+        {
+          "title": "Open documentation issues",
+          "query": "org:{org} is:issue is:open label:documentation",
+          "note": "Find organisation-wide issues with the documentation label.",
+          "tip": "Labels are project-defined; adjust the label for the repository.",
+          "mode": "issues",
+          "global_query": "is:issue is:open label:documentation"
+        },
+        {
+          "title": "Merged changes mentioning a term",
+          "query": "repo:{repo} is:pr is:merged \"{term}\" in:title,body",
+          "note": "Find merged pull requests describing a component or change.",
+          "tip": "Confirm the merge date and associated release before drawing conclusions.",
+          "mode": "issues",
+          "global_query": "is:pr is:merged \"{term}\" in:title,body"
+        },
+        {
+          "title": "Pull requests awaiting required review",
+          "query": "repo:{repo} is:pr is:open review:required",
+          "note": "Find open changes that still require review.",
+          "tip": "Review state is workflow information rather than a security assessment.",
+          "mode": "issues",
+          "global_query": "is:pr is:open review:required"
+        },
+        {
+          "title": "Merged changes mentioning a domain",
+          "query": "repo:{repo} is:pr is:merged \"{domain}\" in:body",
+          "note": "Find merged pull requests whose description names the domain.",
+          "tip": "Issue search does not search the changed code; follow the PR to inspect its diff.",
+          "mode": "issues",
+          "global_query": "is:pr is:merged in:body"
+        }
+      ]
+    }
+  ],
+  "operators": [
+    {
+      "operator": "org:",
+      "description": "Organisation scope.",
+      "example": "org:example-org",
+      "note": "Full name required.",
+      "mode": "code"
+    },
+    {
+      "operator": "repo:",
+      "description": "Single-repository scope.",
+      "example": "repo:example-org/example-project",
+      "note": "Use owner/repository.",
+      "mode": "code"
+    },
+    {
+      "operator": "content:",
+      "description": "File contents only.",
+      "example": "content:\"example.com\"",
+      "note": "Bare text also matches paths.",
+      "mode": "code"
+    },
+    {
+      "operator": "\"phrase\"",
+      "description": "Exact text.",
+      "example": "content:\"service endpoint\"",
+      "note": "Escape embedded quotes as \\\".",
+      "mode": "code"
+    },
+    {
+      "operator": "path:",
+      "description": "Path text or glob.",
+      "example": "path:*.yaml",
+      "note": "An initial / anchors a glob.",
+      "mode": "code"
+    },
+    {
+      "operator": "AND · OR · NOT",
+      "description": "Combine or exclude clauses.",
+      "example": "(path:*.yml OR path:*.yaml) NOT path:examples",
+      "note": "Group alternatives.",
+      "mode": "code"
+    },
+    {
+      "operator": "language:",
+      "description": "File language.",
+      "example": "language:php",
+      "note": "Use a recognised name.",
+      "mode": "code"
+    },
+    {
+      "operator": "symbol:",
+      "description": "Symbol definitions.",
+      "example": "language:php symbol:Router",
+      "note": "Not symbol usages.",
+      "mode": "code"
+    },
+    {
+      "operator": "is:fork",
+      "description": "Forked repositories.",
+      "example": "content:\"example.com\" NOT is:fork",
+      "note": "Use NOT to exclude.",
+      "mode": "code"
+    },
+    {
+      "operator": "is:archived",
+      "description": "Archived repositories.",
+      "example": "org:example-org is:archived",
+      "note": "Different from archived:true.",
+      "mode": "code"
+    },
+    {
+      "operator": "/regex/",
+      "description": "Pattern matching.",
+      "example": "content:/https?:\\/\\/example\\.com/",
+      "note": "No look-around assertions.",
+      "mode": "code"
+    },
+    {
+      "operator": "in:",
+      "description": "Metadata or README field.",
+      "example": "\"example.com\" in:readme",
+      "note": "Does not search arbitrary files.",
+      "mode": "repositories"
+    },
+    {
+      "operator": "stars:",
+      "description": "Star-count comparison.",
+      "example": "org:example-org stars:>=10",
+      "note": "Not a quality guarantee.",
+      "mode": "repositories"
+    },
+    {
+      "operator": "pushed:",
+      "description": "Latest push date.",
+      "example": "org:example-org pushed:>=2026-01-01",
+      "note": "Use YYYY-MM-DD.",
+      "mode": "repositories"
+    },
+    {
+      "operator": "archived:",
+      "description": "Archived-project filter.",
+      "example": "org:example-org archived:false",
+      "note": "",
+      "mode": "repositories"
+    },
+    {
+      "operator": "fork:",
+      "description": "Include or isolate forks.",
+      "example": "org:example-org fork:only",
+      "note": "fork:true includes forks.",
+      "mode": "repositories"
+    },
+    {
+      "operator": "topic:",
+      "description": "Repository topic.",
+      "example": "org:example-org topic:documentation",
+      "note": "",
+      "mode": "repositories"
+    },
+    {
+      "operator": "is:issue · is:pr",
+      "description": "Select the conversation type.",
+      "example": "repo:example-org/example-project is:pr",
+      "note": "PRs use issue-search mode.",
+      "mode": "issues"
+    },
+    {
+      "operator": "is:open · is:closed",
+      "description": "Conversation state.",
+      "example": "repo:example-org/example-project is:issue is:open",
+      "note": "",
+      "mode": "issues"
+    },
+    {
+      "operator": "in:title,body,comments",
+      "description": "Select text fields.",
+      "example": "\"example.com\" in:body,comments",
+      "note": "No changed-code search.",
+      "mode": "issues"
+    },
+    {
+      "operator": "label:",
+      "description": "Project-defined label.",
+      "example": "is:issue label:\"help wanted\"",
+      "note": "Quote multiword labels.",
+      "mode": "issues"
+    },
+    {
+      "operator": "updated:",
+      "description": "Last update date.",
+      "example": "is:issue updated:>=2026-01-01",
+      "note": "Use YYYY-MM-DD.",
+      "mode": "issues"
+    },
+    {
+      "operator": "review:",
+      "description": "Pull-request review state.",
+      "example": "is:pr review:required",
+      "note": "",
+      "mode": "issues"
+    },
+    {
+      "operator": "is:merged",
+      "description": "Merged pull requests.",
+      "example": "is:pr is:merged",
+      "note": "Not a code-search filter.",
+      "mode": "issues"
+    }
+  ],
+  "patterns": [
+    {
+      "title": "Content, not filenames",
+      "description": "Name the content field when the string itself matters.",
+      "query": "org:example-org content:\"example.com\"",
+      "mode": "code"
+    },
+    {
+      "title": "Two configuration formats",
+      "description": "Group alternative file formats before adding the shared term.",
+      "query": "repo:example-org/example-project (path:*.yml OR path:*.yaml) content:\"example.com\"",
+      "mode": "code"
+    },
+    {
+      "title": "Implementation without examples",
+      "description": "Exclude an example path when reviewing implementation references.",
+      "query": "repo:example-org/example-project content:\"endpoint\" NOT path:examples",
+      "mode": "code"
+    },
+    {
+      "title": "Organisation, language and topic",
+      "description": "Combine repository-level filters to narrow a project shortlist.",
+      "query": "org:example-org language:php topic:documentation archived:false",
+      "mode": "repositories"
+    },
+    {
+      "title": "README discovery",
+      "description": "Search project READMEs for a named domain, then inspect matching repositories.",
+      "query": "org:example-org \"example.com\" in:readme",
+      "mode": "repositories"
+    },
+    {
+      "title": "Issue to merged change",
+      "description": "Look for merged pull requests describing an issue’s topic.",
+      "query": "repo:example-org/example-project is:pr is:merged \"deployment\" in:title,body",
+      "mode": "issues"
+    }
+  ],
+  "guide": [
+    {
+      "title": "Choose the right search mode",
+      "text": "Code searches files; repository search finds projects; issue search covers issues and pull requests. Change modes before using a template from another category."
+    },
+    {
+      "title": "Set a meaningful scope",
+      "text": "Start with an organisation or a complete owner/repository name. Domain mentions and copied code do not establish asset ownership."
+    },
+    {
+      "title": "Open searches in your own GitHub session",
+      "text": "GitHub requires sign-in for code search, including public code. Githubify builds links and does not receive your GitHub login or access token."
+    },
+    {
+      "title": "Understand code-search coverage",
+      "text": "Code search covers default branches and is not exhaustive. Generated, vendored, binary and oversized files can be absent. Queries are limited to 1,000 characters and results to 100; code-result sorting is unavailable."
+    },
+    {
+      "title": "Read the context",
+      "text": "Inspect nearby code, README explanations and release information. A reference may be a tutorial, dependency, obsolete example or third-party endpoint."
+    },
+    {
+      "title": "Keep evidence with the source",
+      "text": "Record a repository link and the relevant commit or file location in your own notes. Avoid copying private account data into shared screenshots or query exports."
+    },
+    {
+      "title": "Adapt syntax deliberately",
+      "text": "Use content: and path: for modern website code search. Repository and issue modes have different fields. The REST code-search API also differs from the website search this tool targets."
+    }
+  ],
+  "references": [
+    {
+      "label": "GitHub Code Search syntax",
+      "url": "https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax"
+    },
+    {
+      "label": "Code Search access and limitations",
+      "url": "https://docs.github.com/en/search-github/github-code-search/about-github-code-search"
+    },
+    {
+      "label": "Repository search qualifiers",
+      "url": "https://docs.github.com/en/search-github/searching-on-github/searching-for-repositories"
+    },
+    {
+      "label": "Issue and pull-request search",
+      "url": "https://docs.github.com/en/search-github/searching-on-github/searching-issues-and-pull-requests"
+    },
+    {
+      "label": "Website search and the legacy code API",
+      "url": "https://docs.github.com/en/search-github/searching-on-github/searching-code"
+    }
+  ]
+}

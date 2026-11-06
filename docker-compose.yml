@@ -1,0 +1,19 @@
+# THUGSred Githubify - docker compose up -d   →   http://localhost:8080
+services:
+  githubify:
+    build: .
+    image: thugsred-githubify:1.0.0
+    container_name: githubify
+    ports:
+      - "${GITHUBIFY_BIND:-127.0.0.1}:${GITHUBIFY_PORT:-8080}:8080"
+    restart: unless-stopped
+    # Nothing in the container needs to be writable or privileged.
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/apache2
+      - /var/lock/apache2
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,39 @@
+# The image only needs public assets, PHP source and server configuration.
+**
+!src/
+!src/**
+!docker/
+!docker/**
+
+# Keep local secrets and runtime files out even when placed under src/.
+**/.env
+**/.env.*
+**/*.env
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/secrets/**
+**/credentials/**
+**/*credentials*.json
+**/service-account*.json
+**/auth.json
+**/.ssh/**
+**/.aws/**
+**/.kube/**
+**/*.log
+**/*.sql
+**/*.sqlite*
+**/*.db
+**/*.bak
+**/*.zip
+**/node_modules/**
+**/vendor/**
+**/.git/**
+
+# Required notices for the bundled runtime fonts.
+!licenses/
+!licenses/**
+
+# Local navigation and other host-specific application settings.
+src/lib/local.php
